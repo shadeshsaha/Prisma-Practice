@@ -14,6 +14,7 @@ async function main() {
       //   ekhane data schema onushare add korte hbe
       email: "Swadesh@gmail.com",
       name: "Swadesh",
+      age: 26,
     },
   });
   console.log(postUser);
