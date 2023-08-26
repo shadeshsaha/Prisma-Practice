@@ -11,9 +11,45 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  name String
-  age Int?
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String
+  role    String
+  // age Int?
+  profile Profile?
+  posts   Post[]
+
+  @@map("users") // Avabe amra nijeder custom table name add korte pari. Model er name onushare nah
 }
 
+model Profile {
+  id     Int    @id @default(autoincrement())
+  bio    String
+  userId Int    @unique
+  user   User   @relation(fields: [userId], references: [id]) // avabe User er sathe Profile er one-to-one relation set holo
+
+  @@map("profiles")
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[]
+
+  @@map("categories")
+}
+
+model Post {
+  id       Int    @id @default(autoincrement())
+  title    String
+  authorId Int
+  author   User   @relation(fields: [authorId], references: [id]) // avabe User er sathe Post er many-to-one relation set holo
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id]) // avabe Category er sathe Post er one-to-many relation set holo
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("posts")
+}
