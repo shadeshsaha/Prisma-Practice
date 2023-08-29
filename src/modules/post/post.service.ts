@@ -15,12 +15,13 @@ const cratePost = async (data: Post): Promise<Post> => {
 };
 
 const getAllPost = async (options: any) => {
-  const { sortBy, sortOrder } = options;
+  const { sortBy, sortOrder, searchTerm } = options;
   const result = await prisma.post.findMany({
     include: {
       author: true,
       category: true,
     },
+    // Ordering
     // orderBy: {
     //   // createdAt: "desc",
     //   [sortBy]: sortOrder,
@@ -31,6 +32,26 @@ const getAllPost = async (options: any) => {
             [sortBy]: sortOrder,
           } // jodi kono kichu input dea hoy tahole shei onujayi eta sort kore dibe
         : { createdAt: "desc" }, // r kono kichu query hishebe na pathale default vabe createdAt desc onujayi sajaye dibe
+
+    // Filtering
+    where: {
+      OR: [
+        {
+          title: {
+            contains: searchTerm,
+            mode: "insensitive",
+          },
+        },
+        {
+          author: {
+            name: {
+              contains: searchTerm,
+              mode: "insensitive",
+            },
+          },
+        },
+      ],
+    },
   });
   return result;
 };
