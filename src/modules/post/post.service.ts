@@ -24,7 +24,14 @@ const getAllPost = async () => {
   return result;
 };
 
+const getSinglePost = async (id: number) => {
+  const result = await prisma.$queryRaw`SELECT * FROM posts WHERE id = ${id}`;
+
+  return result;
+};
+
 export const PostService = {
   cratePost,
   getAllPost,
+  getSinglePost,
 };
