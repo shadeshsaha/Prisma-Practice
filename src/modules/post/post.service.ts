@@ -20,46 +20,53 @@ const getAllPost = async (options: any) => {
   const skip = parseInt(limit) * parseInt(page) - parseInt(limit);
   const take = parseInt(limit);
 
-  const result = await prisma.post.findMany({
-    skip,
-    take,
-    include: {
-      author: true,
-      category: true,
-    },
-    // Ordering
-    // orderBy: {
-    //   // createdAt: "desc",
-    //   [sortBy]: sortOrder,
-    // },
-    orderBy:
-      sortBy && sortOrder
-        ? {
-            [sortBy]: sortOrder,
-          } // jodi kono kichu input dea hoy tahole shei onujayi eta sort kore dibe
-        : { createdAt: "desc" }, // r kono kichu query hishebe na pathale default vabe createdAt desc onujayi sajaye dibe
+  // Using Transaction & Roolback
+  return await prisma.$transaction(async (transaction) => {
+    // tx/transaction j kono ekta use kortei pari
+    const result = await transaction.post.findMany({
+      skip,
+      take,
+      include: {
+        author: true,
+        category: true,
+      },
+      // Ordering
+      // orderBy: {
+      //   // createdAt: "desc",
+      //   [sortBy]: sortOrder,
+      // },
+      orderBy:
+        sortBy && sortOrder
+          ? {
+              [sortBy]: sortOrder,
+            } // jodi kono kichu input dea hoy tahole shei onujayi eta sort kore dibe
+          : { createdAt: "desc" }, // r kono kichu query hishebe na pathale default vabe createdAt desc onujayi sajaye dibe
 
-    // Filtering
-    where: {
-      OR: [
-        {
-          title: {
-            contains: searchTerm,
-            mode: "insensitive",
-          },
-        },
-        {
-          author: {
-            name: {
+      // Filtering
+      where: {
+        OR: [
+          {
+            title: {
               contains: searchTerm,
               mode: "insensitive",
             },
           },
-        },
-      ],
-    },
+          {
+            author: {
+              name: {
+                contains: searchTerm,
+                mode: "insensitive",
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    const total = await transaction.post.count(); // post table er koto gulo data ache seta count kore dibe
+
+    return { data: result, total };
   });
-  return result;
 };
 
 const getSinglePost = async (id: number) => {

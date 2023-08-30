@@ -22,7 +22,8 @@ const getAllPostController = async (req: Request, res: Response) => {
     res.send({
       success: true,
       message: "Post fetched Successfully!",
-      data: result,
+      total: result.total,
+      data: result.data,
     });
   } catch (error) {
     res.send(error);
