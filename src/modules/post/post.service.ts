@@ -97,12 +97,39 @@ const deletePost = async (id: number): Promise<Post> => {
   return result;
 };
 
+const learnAggregateAndGrouping = async () => {
+  // Aggregation
+  // const result = await prisma.post.aggregate({
+  //   _avg: {
+  //     authorId: true, // Author ID er number er average dibe
+  //     categoryId: true,
+  //   },
+  //   _count: {
+  //     authorId: true,
+  //   },
+  //   _sum: {
+  //     authorId: true,
+  //   },
+  // });
+
+  // Grouping
+  const result = await prisma.post.groupBy({
+    by: ["title"], // ekhane multiple field dea jete pare
+    // amra "aggregate" taw "group by" er vetore use korte pari
+    _count: {
+      title: true,
+    },
+  });
+  return result;
+};
+
 export const PostService = {
   cratePost,
   getAllPost,
   getSinglePost,
   updatePost,
   deletePost,
+  learnAggregateAndGrouping,
 };
 
 /**
