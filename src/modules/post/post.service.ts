@@ -17,8 +17,8 @@ const cratePost = async (data: Post): Promise<Post> => {
 const getAllPost = async (options: any) => {
   const { sortBy, sortOrder, searchTerm, page, limit } = options;
   // Pagination
-  const skip = parseInt(limit) * parseInt(page) - parseInt(limit);
-  const take = parseInt(limit);
+  const skip = parseInt(limit) * parseInt(page) - parseInt(limit) || 0;
+  const take = parseInt(limit) || 10;
 
   // Using Transaction & Roolback
   return await prisma.$transaction(async (transaction) => {
