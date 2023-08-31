@@ -78,13 +78,17 @@ const getSinglePost = async (id: number) => {
 const updatePost = async (
   id: number,
   payload: Partial<Post>
-): Promise<Post> => {
-  const result = await prisma.post.update({
-    where: {
-      id,
-    },
-    data: payload,
-  });
+): Promise<Post | number> => {
+  // const result = await prisma.post.update({
+  //   where: {
+  //     id,
+  //   },
+  //   data: payload,
+  // });
+
+  // using $executeRaw
+  const result =
+    await prisma.$executeRaw`update posts set title = ${payload.title} where id=${id}`;
   return result;
 };
 

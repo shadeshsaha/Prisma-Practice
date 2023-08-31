@@ -39,16 +39,18 @@ const insertOrUpdateProfile = async (data: Profile): Promise<Profile> => {
 
 const getUsers = async () => {
   // const result = await prisma.user.findMany();
+  // const result = await prisma.user.findMany({
+  //   // select: {
+  //   //   email: true,
+  //   // },
 
-  const result = await prisma.user.findMany({
-    // select: {
-    //   email: true,
-    // },
+  //   include: {
+  //     profile: true,
+  //   }, // User table er sathe Profile table er connection ache. User theke direct Profile dekhar way eta populate use na kore like mongoose
+  // }); // Specific column/field gulo dekhte chaile segulo dekhanor jonno "SELECT" use kore avabe korte pari
 
-    include: {
-      profile: true,
-    }, // User table er sathe Profile table er connection ache. User theke direct Profile dekhar way eta populate use na kore like mongoose
-  }); // Specific column/field gulo dekhte chaile segulo dekhanor jonno "SELECT" use kore avabe korte pari
+  // using $queryRaw
+  const result = await prisma.$queryRaw`select * from users`;
   return result;
 };
 
