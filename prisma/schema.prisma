@@ -53,3 +53,9 @@ model Post {
 
   @@map("posts")
 }
+
+// 
+model newModel {
+  id   String @id @default(uuid())
+  name String
+}

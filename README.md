@@ -18,3 +18,5 @@ Prisma is an open-source database toolkit that simplifies database access and ma
 - [Raw database access](https://www.prisma.io/docs/concepts/components/prisma-client/raw-database-access)
 - [Prisma Studio](https://www.prisma.io/docs/concepts/components/prisma-studio)
 - [Team development with Prisma Migrate](https://www.prisma.io/docs/guides/migrate/developing-with-prisma-migrate/team-development)
+
+- [Apollo Level 2 - Prisma Github Repo](https://github.com/Apollo-Level2-Web-Dev/hello-prisma)
